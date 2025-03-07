@@ -5,7 +5,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
     private var img: UIImageView = {
         let img = UIImageView()
@@ -98,7 +98,7 @@ class ViewController: UIViewController {
     }
     
     @objc func tap() {
-        navigationController?.pushViewController(NextViewController(), animated: true)
+        navigationController?.pushViewController(MainTabBarController(), animated: true)
     }
 }
 
