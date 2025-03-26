@@ -1,12 +1,7 @@
 import UIKit
 
 final class CustomFriendViewCell: UITableViewCell {
-    private var oval: UIView = {
-        let view = UIView()
-        view.backgroundColor = .purple
-        view.layer.cornerRadius = 30
-        return view
-    }()
+    private var imgFriend = UIImageView(image: UIImage(systemName: "person"))
     
     private var text: UILabel = {
         let label = UILabel()
@@ -26,25 +21,27 @@ final class CustomFriendViewCell: UITableViewCell {
     }
     
     private func setupViews() {
-        contentView.addSubview(oval)
+        addSubview(imgFriend)
         contentView.addSubview(text)
         setupConstraints()
     }
     
     private func setupConstraints() {
-        oval.translatesAutoresizingMaskIntoConstraints = false
+        imgFriend.translatesAutoresizingMaskIntoConstraints = false
         text.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            oval.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            oval.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            oval.heightAnchor.constraint(equalToConstant: 50),
-            oval.widthAnchor.constraint(equalToConstant: 70),
+            imgFriend.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 12),
+            imgFriend.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            imgFriend.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
+            imgFriend.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            imgFriend.widthAnchor.constraint(equalToConstant: 40),
+            imgFriend.heightAnchor.constraint(equalTo: imgFriend.widthAnchor),
             
-            text.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            text.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            text.leadingAnchor.constraint(equalTo: oval.trailingAnchor, constant: 30),
-            text.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 10),
+            text.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            text.leadingAnchor.constraint(equalTo: imgFriend.trailingAnchor, constant: 16),
+            text.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            text.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
         ])
     }
     

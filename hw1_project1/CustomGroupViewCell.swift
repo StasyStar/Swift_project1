@@ -1,12 +1,7 @@
 import UIKit
 
 final class CustomGroupViewCell: UITableViewCell {
-    private var oval: UIView = {
-        let view = UIView()
-        view.backgroundColor = .cyan
-        view.layer.cornerRadius = 30
-        return view
-    }()
+    private var imgGroup = UIImageView(image: UIImage(systemName: "person.3"))
     
     private var text1: UILabel = {
         let label = UILabel()
@@ -33,30 +28,31 @@ final class CustomGroupViewCell: UITableViewCell {
     }
     
     private func setupViews() {
-        contentView.addSubview(oval)
+        contentView.addSubview(imgGroup)
         contentView.addSubview(text1)
         contentView.addSubview(text2)
         setupConstraints()
     }
     
     private func setupConstraints() {
-        oval.translatesAutoresizingMaskIntoConstraints = false
+        imgGroup.translatesAutoresizingMaskIntoConstraints = false
         text1.translatesAutoresizingMaskIntoConstraints = false
         text2.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            oval.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            oval.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            oval.heightAnchor.constraint(equalToConstant: 50),
-            oval.widthAnchor.constraint(equalToConstant: 70),
+            imgGroup.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            imgGroup.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            imgGroup.widthAnchor.constraint(equalToConstant: 60),
+            imgGroup.heightAnchor.constraint(equalToConstant: 40),
             
-            text1.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            text1.leadingAnchor.constraint(equalTo: oval.trailingAnchor, constant: 30),
-            text1.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 10),
+            text1.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            text1.leadingAnchor.constraint(equalTo: imgGroup.trailingAnchor, constant: 16),
+            text1.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
-            text2.topAnchor.constraint(equalTo: text1.bottomAnchor, constant: 10),
+            text2.topAnchor.constraint(equalTo: text1.bottomAnchor, constant: 8),
             text2.leadingAnchor.constraint(equalTo: text1.leadingAnchor),
             text2.trailingAnchor.constraint(equalTo: text1.trailingAnchor),
+            text2.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
         ])
     }
 }
