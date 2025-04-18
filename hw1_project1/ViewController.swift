@@ -1,8 +1,3 @@
-// Реализовать экран без использования сториборд (проект 1).
-// Это форма реализации.
-// Цвета на усмотрение, экран должен быть приближен к схеме (расположение элементов).
-// В поля «Логин» и «Пароль» можно вводить текст.
-
 import UIKit
 
 final class ViewController: UIViewController {
@@ -101,4 +96,3 @@ final class ViewController: UIViewController {
         navigationController?.pushViewController(MainTabBarController(), animated: true)
     }
 }
-

@@ -1,6 +1,7 @@
 import UIKit
 
 final class GroupsViewController: UITableViewController {
+    private var networkService = NetworkService()
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -8,6 +9,8 @@ final class GroupsViewController: UITableViewController {
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.barTintColor = .white
         navigationItem.title = "Groups"
+        
+        networkService.getGroups()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {5}

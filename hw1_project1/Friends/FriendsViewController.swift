@@ -2,6 +2,7 @@ import UIKit
 
 final class FriendsViewController: UITableViewController {
     let friends: [String] = ["Stasy", "Igor", "Ivan", "Marina", "Valentina"]
+    private var networkService = NetworkService()
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -10,6 +11,8 @@ final class FriendsViewController: UITableViewController {
         navigationController?.navigationBar.barTintColor = .white
         navigationItem.title = "Friends"
         tableView.register(CustomFriendViewCell.self, forCellReuseIdentifier: "FriendCell")
+        
+        networkService.getFriends()
     }
         
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { friends.count }

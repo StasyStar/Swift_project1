@@ -107,6 +107,9 @@
 			);
 			mainGroup = F8FE169D2D7993D000A00E40;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F8ADF2DE2DA44DC600C1FACF /* XCRemoteSwiftPackageReference "vk-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F8FE16A72D7993D000A00E40 /* Products */;
 			projectDirPath = "";
@@ -331,6 +334,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F8ADF2DE2DA44DC600C1FACF /* XCRemoteSwiftPackageReference "vk-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/VKCOM/vk-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = F8FE169E2D7993D000A00E40 /* Project object */;
 }

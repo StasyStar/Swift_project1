@@ -2,6 +2,7 @@ import UIKit
 
 final class PhotosViewController: UICollectionViewController {
     private let imageNames = ["photo1", "photo2", "photo3", "photo4", "photo5", "photo6"]
+    private var networkService = NetworkService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -13,6 +14,8 @@ final class PhotosViewController: UICollectionViewController {
             layout.minimumInteritemSpacing = 10
             layout.minimumLineSpacing = 10
         }
+        
+        networkService.getPhotos()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { imageNames.count }
