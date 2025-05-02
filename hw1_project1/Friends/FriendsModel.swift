@@ -5,8 +5,8 @@ struct FriendsModel: Decodable {
 
 struct Friend: Decodable {
     let id: Int
-    let firstName: String
-    let lastName: String
+    let firstName: String?
+    let lastName: String?
     let photo100: String
     let online: Int
     

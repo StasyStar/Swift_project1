@@ -1,11 +1,17 @@
 import UIKit
 
 final class PhotosViewController: UICollectionViewController {
-    private let imageNames = ["photo1", "photo2", "photo3", "photo4", "photo5", "photo6"]
-    private var networkService = NetworkService()
+    private let networkService = NetworkService()
+    private var photos: [Photo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Фотографии"
+        setupCollectionView()
+        loadPhotos()
+    }
+    
+    private func setupCollectionView() {
         collectionView.backgroundColor = .lightGray
         collectionView.register(CustomPhotoViewCell.self, forCellWithReuseIdentifier: "Cell")
         
@@ -14,31 +20,44 @@ final class PhotosViewController: UICollectionViewController {
             layout.minimumInteritemSpacing = 10
             layout.minimumLineSpacing = 10
         }
-        
-        networkService.getPhotos()
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { imageNames.count }
+    private func loadPhotos() {
+        networkService.getPhotos { [weak self] photos in
+            self?.photos = photos
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return photos.count
+    }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         guard let cell = cell as? CustomPhotoViewCell else { return UICollectionViewCell() }
-        let imageName = imageNames[indexPath.item]
-        if let image = UIImage(named: imageName) {
-            cell.configure(with: image)
-        }
-        
-        cell.tap = { [weak self] image in
-            self?.navigationController?.pushViewController(ImageViewController(image: image), animated: true)
-        }
+
+        let photo = photos[indexPath.item]
+        cell.configure(with: photo)
+
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? CustomPhotoViewCell,
+           let image = cell.imageView.image {
+            let detailVC = ImageViewController(image: image)
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
     }
 }
 
 extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat = 10
-        let collectionViewSize = collectionView.frame.size.width - padding * 3
+        let collectionViewSize = collectionView.frame.width - padding * 3
         let width = collectionViewSize / 2
         return CGSize(width: width, height: width)
     }

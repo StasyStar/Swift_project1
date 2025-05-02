@@ -55,6 +55,24 @@ final class CustomGroupViewCell: UITableViewCell {
             text2.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
         ])
     }
+    
+    func updateCell(model: Group) {
+        text1.text = model.name
+        text2.text = "Участников: \(model.membersCount)"
+        
+        if let url = URL(string: model.photo100) {
+            DispatchQueue.global().async {
+                if let data = try? Data(contentsOf: url),
+                   let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self.imgGroup.image = image
+                    }
+                }
+            }
+        } else {
+            imgGroup.image = UIImage(systemName: "person.3")
+        }
+    }
 }
 
 

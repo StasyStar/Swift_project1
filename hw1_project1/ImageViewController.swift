@@ -4,21 +4,22 @@ final class ImageViewController: UIViewController {
     private var imageView = UIImageView()
     private var textLabel = UILabel()
     private let randomTexts = [
-            "Hello, world!",
-            "Swift is awesome!",
-            "Random text here",
-            "This is a test",
-            "Image with text",
-            "Have a nice day!",
-            "Coding is fun",
-            "Keep learning",
-            "Stay curious",
-            "Make it happen"
+        "Hello, world!",
+        "Swift is awesome!",
+        "Random text here",
+        "This is a test",
+        "Image with text",
+        "Have a nice day!",
+        "Coding is fun",
+        "Keep learning",
+        "Stay curious",
+        "Make it happen"
     ]
     
     init(image: UIImage) {
         super.init(nibName: nil, bundle: nil)
         imageView.image = image
+        imageView.contentMode = .scaleAspectFit // Устанавливаем правильный режим отображения
     }
     
     required init?(coder: NSCoder) {
@@ -33,7 +34,7 @@ final class ImageViewController: UIViewController {
     
     private func setupViews() {
         view.addSubview(imageView)
-        textLabel.text = randomTexts.randomElement() ?? "Default text" 
+        textLabel.text = randomTexts.randomElement() ?? "Default text"
         textLabel.textAlignment = .center
         textLabel.textColor = .black
         view.addSubview(textLabel)
@@ -44,13 +45,16 @@ final class ImageViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        guard let image = imageView.image else { return }
+        let aspectRatio = image.size.height / image.size.width
+        
         NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
-            imageView.widthAnchor.constraint(equalToConstant: view.frame.size.width/2),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: aspectRatio),
             
-            textLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20), // Текст под изображением
+            textLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
             textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         ])

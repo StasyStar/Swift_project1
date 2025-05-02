@@ -7,7 +7,9 @@ struct Photo: Decodable {
     let id: Int
     let albumId: Int
     let ownerId: Int
-    let sizes: [PhotoSize]
+    let url: String  // Теперь url прямо в объекте Photo
+    let width: Int
+    let height: Int
     let text: String
     let date: Int
     let likes: PhotoLikes
@@ -16,18 +18,13 @@ struct Photo: Decodable {
         case id
         case albumId = "album_id"
         case ownerId = "owner_id"
-        case sizes
+        case url
+        case width
+        case height
         case text
         case date
         case likes
     }
-}
-
-struct PhotoSize: Decodable {
-    let type: String
-    let url: String
-    let width: Int
-    let height: Int
 }
 
 struct PhotoLikes: Decodable {
