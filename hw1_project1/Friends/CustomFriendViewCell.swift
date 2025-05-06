@@ -47,10 +47,9 @@ final class CustomFriendViewCell: UITableViewCell {
         text.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            imgFriend.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 12),
+            imgFriend.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             imgFriend.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             imgFriend.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -12),
-            imgFriend.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             imgFriend.widthAnchor.constraint(equalToConstant: 40),
             imgFriend.heightAnchor.constraint(equalTo: imgFriend.widthAnchor),
             
@@ -84,10 +83,6 @@ final class CustomFriendViewCell: UITableViewCell {
         } else {
             imgFriend.image = UIImage(systemName: "person")
         }
-    }
-    
-    func setFriendName(_ name: String) {
-        text.text = name
     }
 }
 

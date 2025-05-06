@@ -19,7 +19,7 @@ final class ImageViewController: UIViewController {
     init(image: UIImage) {
         super.init(nibName: nil, bundle: nil)
         imageView.image = image
-        imageView.contentMode = .scaleAspectFit // Устанавливаем правильный режим отображения
+        imageView.contentMode = .scaleAspectFit
     }
     
     required init?(coder: NSCoder) {
