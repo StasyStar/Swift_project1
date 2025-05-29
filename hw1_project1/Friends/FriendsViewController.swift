@@ -3,14 +3,12 @@ import UIKit
 final class FriendsViewController: UITableViewController {
     private let networkService = NetworkService()
     private var models: [Friend] = []
+    private var themeView = ThemeView()
    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Friends"
         tableView.reloadData()
-        view.backgroundColor = .lightGray
-        navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.barTintColor = .white
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person"), style: .plain, target: self, action: #selector(tap))
         
@@ -24,6 +22,7 @@ final class FriendsViewController: UITableViewController {
                 self?.tableView.reloadData()
             }
         }
+        view.backgroundColor = Theme.currentTheme.backgroundColor
     }
         
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { models.count }

@@ -1,26 +1,22 @@
 import UIKit
 
 final class CustomGroupViewCell: UITableViewCell {
-    private var imgGroup = UIImageView(image: UIImage(systemName: "person.3"))
+    private var imgGroup = UIImageView()
     
     private var text1: UILabel = {
         let label = UILabel()
-        label.text = "Group's Name"
-        label.textColor = .black
         return label
     }()
     
     private var text2: UILabel = {
         let label = UILabel()
-        label.text = "Description"
-        label.textColor = .black
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .clear
         setupViews()
+        applyTheme()
     }
     
     required init?(coder: NSCoder) {
@@ -32,6 +28,10 @@ final class CustomGroupViewCell: UITableViewCell {
         contentView.addSubview(text1)
         contentView.addSubview(text2)
         setupConstraints()
+        
+        imgGroup.contentMode = .scaleAspectFill
+        imgGroup.clipsToBounds = true
+        imgGroup.layer.cornerRadius = 8
     }
     
     private func setupConstraints() {
@@ -42,8 +42,8 @@ final class CustomGroupViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             imgGroup.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             imgGroup.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            imgGroup.widthAnchor.constraint(equalToConstant: 60),
-            imgGroup.heightAnchor.constraint(equalToConstant: 40),
+            imgGroup.widthAnchor.constraint(equalToConstant: 50),
+            imgGroup.heightAnchor.constraint(equalToConstant: 50),
             
             text1.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             text1.leadingAnchor.constraint(equalTo: imgGroup.trailingAnchor, constant: 16),
@@ -71,7 +71,21 @@ final class CustomGroupViewCell: UITableViewCell {
             }
         } else {
             imgGroup.image = UIImage(systemName: "person.3")
+            imgGroup.tintColor = Theme.currentTheme.textColor
         }
+    }
+    
+    private func applyTheme() {
+        contentView.backgroundColor = Theme.currentTheme.cellBackgroundColor
+        backgroundColor = Theme.currentTheme.cellBackgroundColor
+        text1.textColor = Theme.currentTheme.textColor
+        text2.textColor = Theme.currentTheme.textColor
+        imgGroup.tintColor = Theme.currentTheme.textColor
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imgGroup.image = nil
     }
 }
 
