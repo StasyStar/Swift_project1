@@ -20,11 +20,13 @@ final class PhotosViewController: UICollectionViewController {
     
     private func setupAppearance() {
         view.backgroundColor = Theme.currentTheme.backgroundColor
-        
+
+        collectionView.backgroundColor = Theme.currentTheme.backgroundColor
         navigationController?.navigationBar.barTintColor = Theme.currentTheme.backgroundColor
         navigationController?.navigationBar.tintColor = Theme.currentTheme.textColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: Theme.currentTheme.textColor]
     }
+
     
     private func setupCollectionView() {
         collectionView.backgroundColor = Theme.currentTheme.backgroundColor
