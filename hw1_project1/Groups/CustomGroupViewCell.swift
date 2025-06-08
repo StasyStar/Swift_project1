@@ -16,7 +16,6 @@ final class CustomGroupViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
-        applyTheme()
     }
     
     required init?(coder: NSCoder) {
@@ -28,10 +27,6 @@ final class CustomGroupViewCell: UITableViewCell {
         contentView.addSubview(text1)
         contentView.addSubview(text2)
         setupConstraints()
-        
-        imgGroup.contentMode = .scaleAspectFill
-        imgGroup.clipsToBounds = true
-        imgGroup.layer.cornerRadius = 8
     }
     
     private func setupConstraints() {
@@ -59,7 +54,7 @@ final class CustomGroupViewCell: UITableViewCell {
     func updateCell(model: Group) {
         text1.text = model.name
         text2.text = "Участников: \(model.membersCount)"
-        
+        imgGroup.tintColor = Theme.currentTheme.textColor
         if let url = URL(string: model.photo100) {
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: url),
@@ -67,12 +62,19 @@ final class CustomGroupViewCell: UITableViewCell {
                     DispatchQueue.main.async {
                         self.imgGroup.image = image
                     }
+                } else {
+                    DispatchQueue.main.async {
+                        self.imgGroup.image = UIImage(systemName: "person.3")
+                        self.imgGroup.contentMode = .scaleAspectFill
+                    }
                 }
             }
-        } else {
-            imgGroup.image = UIImage(systemName: "person.3")
-            imgGroup.tintColor = Theme.currentTheme.textColor
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        applyTheme()
     }
     
     private func applyTheme() {

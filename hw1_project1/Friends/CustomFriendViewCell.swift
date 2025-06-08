@@ -26,7 +26,6 @@ final class CustomFriendViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .clear
         setupViews()
     }
     
@@ -67,10 +66,11 @@ final class CustomFriendViewCell: UITableViewCell {
     
     func updateCell(model: Friend) {
         text.text = (model.firstName ?? "") + " " + (model.lastName ?? "")
+        
         let customGreen = UIColor(red: 27/255, green: 102/255, blue: 20/255, alpha: 1)
         let customRed = UIColor(red: 168/255, green: 25/255, blue: 25/255, alpha: 1)
         onlineCircle.backgroundColor = model.online == 1 ? customGreen : customRed
-        
+        imgFriend.tintColor = Theme.currentTheme.textColor
         if let url = URL(string: model.photo100) {
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: url),
@@ -84,5 +84,18 @@ final class CustomFriendViewCell: UITableViewCell {
             imgFriend.image = UIImage(systemName: "person")
         }
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        applyTheme()
+    }
+    
+    private func applyTheme() {
+        contentView.backgroundColor = Theme.currentTheme.cellBackgroundColor
+        backgroundColor = Theme.currentTheme.cellBackgroundColor
+        text.textColor = Theme.currentTheme.textColor
+        imgFriend.tintColor = Theme.currentTheme.textColor
+    }
 }
+
 

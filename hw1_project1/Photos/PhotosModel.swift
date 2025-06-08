@@ -7,7 +7,7 @@ struct Photo: Decodable {
     let id: Int
     let albumId: Int
     let ownerId: Int
-    let url: String  // Теперь url прямо в объекте Photo
+    let url: String
     let width: Int
     let height: Int
     let text: String

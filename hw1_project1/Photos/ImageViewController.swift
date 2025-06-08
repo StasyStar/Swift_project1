@@ -15,6 +15,7 @@ final class ImageViewController: UIViewController {
         "Stay curious",
         "Make it happen"
     ]
+    private var themeView = ThemeView()
     
     init(image: UIImage) {
         super.init(nibName: nil, bundle: nil)
@@ -27,16 +28,29 @@ final class ImageViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        themeView.delegate = self
         super.viewDidLoad()
-        view.backgroundColor = .lightGray
         setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppearance()
+    }
+    
+    private func setupAppearance() {
+        view.backgroundColor = Theme.currentTheme.backgroundColor
+        
+        navigationController?.navigationBar.barTintColor = Theme.currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = Theme.currentTheme.textColor
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: Theme.currentTheme.textColor]
     }
     
     private func setupViews() {
         view.addSubview(imageView)
         textLabel.text = randomTexts.randomElement() ?? "Default text"
         textLabel.textAlignment = .center
-        textLabel.textColor = .black
+        textLabel.textColor = Theme.currentTheme.textColor
         view.addSubview(textLabel)
         setupConstraints()
     }
@@ -61,3 +75,8 @@ final class ImageViewController: UIViewController {
     }
 }
 
+extension ImageViewController: ThemeViewDelegate {
+    func updateColor() {
+        setupAppearance()
+    }
+}

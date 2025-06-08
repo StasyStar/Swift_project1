@@ -15,7 +15,7 @@ final class StandartTheme: AppTheme {
     var backgroundColor: UIColor = .lightGray
     var textColor: UIColor = .black
     var buttonColor: UIColor = .darkGray
-    var cellBackgroundColor: UIColor = .white
+    var cellBackgroundColor: UIColor = UIColor(red: 224/255, green: 224/255, blue: 224/255, alpha: 1)
 }
 
 final class PurpleTheme: AppTheme {

@@ -1,12 +1,11 @@
 import UIKit
 
 protocol ThemeViewDelegate: AnyObject {
-    func themeChange()
+    func updateColor()
 }
 
 final class ThemeView: UIView {
     weak var delegate: ThemeViewDelegate?
-    
     private var button1: UIButton = {
         let button = UIButton()
         button.setTitle("Стандартная тема", for: .normal)
@@ -86,18 +85,21 @@ private extension ThemeView {
     @objc func tap1() {
         Theme.currentTheme = StandartTheme()
         backgroundColor = Theme.currentTheme.backgroundColor
-        delegate?.themeChange()
+        delegate?.updateColor()
+        ThemeSaver.putData()
     }
     
     @objc func tap2() {
         Theme.currentTheme = PurpleTheme()
         backgroundColor = Theme.currentTheme.backgroundColor
-        delegate?.themeChange()
+        delegate?.updateColor()
+        ThemeSaver.putData()
     }
     
     @objc func tap3() {
         Theme.currentTheme = PeachTheme()
         backgroundColor = Theme.currentTheme.backgroundColor
-        delegate?.themeChange()
+        delegate?.updateColor()
+        ThemeSaver.putData()
     }
 }

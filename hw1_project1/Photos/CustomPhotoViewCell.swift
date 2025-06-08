@@ -60,4 +60,16 @@ final class CustomPhotoViewCell: UICollectionViewCell {
     @objc private func handleTap() {
         tap?()
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        applyTheme()
+    }
+    
+    private func applyTheme() {
+        contentView.backgroundColor = Theme.currentTheme.cellBackgroundColor
+        backgroundColor = Theme.currentTheme.cellBackgroundColor
+        textLabel.textColor = Theme.currentTheme.textColor
+    }
+
 }
