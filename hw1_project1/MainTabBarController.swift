@@ -14,7 +14,7 @@ final class MainTabBarController: UITabBarController {
     private func setupViws() {
         let tab1 = UINavigationController(rootViewController: FriendsViewController())
         let tab2 = UINavigationController(rootViewController: GroupsViewController())
-        let tab3 = UINavigationController(rootViewController: PhotosViewController(collectionViewLayout: UICollectionViewFlowLayout()))
+        let tab3 = UINavigationController(rootViewController: PhotosViewController())
         
         tab1.tabBarItem.title = "Friends"
         tab2.tabBarItem.title = "Groups"

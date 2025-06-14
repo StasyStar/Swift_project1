@@ -1,10 +1,19 @@
 import UIKit
 
 final class GroupsViewController: UITableViewController {
-    private let networkService = NetworkService()
+    private let networkService: NetworkServiceProtocol
     private var models: [Group] = []
     private var themeView = ThemeView()
     private var fileCache = FileCache()
+
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
+        self.networkService = networkService
+        super.init(style: .plain)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

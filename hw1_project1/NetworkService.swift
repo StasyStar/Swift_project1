@@ -1,6 +1,12 @@
 import Foundation
 
-final class NetworkService {
+protocol NetworkServiceProtocol {
+    func getFriends(completion: @escaping (Result<[Friend], Error>) -> Void)
+    func getGroups(completion: @escaping (Result<[Group], Error>) -> Void)
+    func getPhotos(completion: @escaping ([Photo]) -> Void)
+}
+
+final class NetworkService: NetworkServiceProtocol {
     enum NetworkError: Error {
         case dataError
     }

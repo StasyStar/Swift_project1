@@ -1,9 +1,19 @@
 import UIKit
 
 final class PhotosViewController: UICollectionViewController {
-    private let networkService = NetworkService()
+    private let networkService: NetworkServiceProtocol
     private var photos: [Photo] = []
     private var themeView = ThemeView()
+    
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
+        self.networkService = networkService
+        let layout = UICollectionViewFlowLayout()
+        super.init(collectionViewLayout: layout)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

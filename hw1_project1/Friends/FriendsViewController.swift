@@ -1,21 +1,41 @@
 import UIKit
 
 final class FriendsViewController: UITableViewController {
-    private let networkService = NetworkService()
-    private var models: [Friend] = []
+    private let networkService: NetworkServiceProtocol
+    private var fileCache: FileCacheProtocol
+    var presentAlertHandler: ((UIAlertController) -> Void)?
+    var models: [Friend] = []
     private var themeView = ThemeView()
-    private var fileCache = FileCache()
-    
-   
+
+    init(networkService: NetworkServiceProtocol = NetworkService(), fileCache: FileCacheProtocol = FileCache()) {
+        self.networkService = networkService
+        self.fileCache = fileCache
+        super.init(style: .plain)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+        getFriends()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupAppearance()
+    }
+
+    private func setupUI() {
         models = fileCache.fetchFriends()
         tableView.reloadData()
         title = "Friends"
+        
         themeView.delegate = self
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(update), for: .valueChanged)
-        getFriends()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "person"),
@@ -23,16 +43,11 @@ final class FriendsViewController: UITableViewController {
             target: self,
             action: #selector(tap)
         )
-        
+
         tableView.register(CustomFriendViewCell.self, forCellReuseIdentifier: "FriendCell")
         tableView.rowHeight = UITableView.automaticDimension
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupAppearance()
-    }
-    
+
     private func setupAppearance() {
         view.backgroundColor = Theme.currentTheme.backgroundColor
         tableView.backgroundColor = Theme.currentTheme.backgroundColor
@@ -42,16 +57,37 @@ final class FriendsViewController: UITableViewController {
         navigationController?.navigationBar.tintColor = Theme.currentTheme.textColor
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: Theme.currentTheme.textColor]
     }
-        
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { models.count }
-    
+
+    func getFriends() {
+        networkService.getFriends { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let friends):
+                self.models = friends
+                self.fileCache.addFriends(friends: friends)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            case .failure(_):
+                self.models = self.fileCache.fetchFriends()
+                DispatchQueue.main.async {
+                    self.showAlert()
+                }
+            }
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        models.count
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedFriend = models[indexPath.row]
         let profileVC = ProfileViewController(friend: selectedFriend)
         navigationController?.pushViewController(profileVC, animated: true)
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FriendCell", for: indexPath) as? CustomFriendViewCell else {
             return UITableViewCell()
@@ -59,24 +95,6 @@ final class FriendsViewController: UITableViewController {
         let friend = models[indexPath.row]
         cell.updateCell(model: friend)
         return cell
-    }
-        
-    func getFriends() {
-        networkService.getFriends { [weak self] result in
-            switch result {
-            case .success(let friends):
-                self?.models = friends
-                self?.fileCache.addFriends(friends: friends)
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-            case .failure(_):
-                self?.models = self?.fileCache.fetchFriends() ?? []
-                DispatchQueue.main.async {
-                    self?.showAlert()
-                }
-            }
-        }
     }
 }
 
@@ -94,24 +112,25 @@ extension FriendsViewController: ThemeViewDelegate {
         navigationController?.view.layer.add(animation, forKey: nil)
         navigationController?.pushViewController(ProfileViewController(), animated: false)
     }
-    
+
     @objc func update() {
         networkService.getFriends { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let friends):
-                self?.models = friends
-                self?.fileCache.addFriends(friends: friends)
+                self.models = friends
+                self.fileCache.addFriends(friends: friends)
                 DispatchQueue.main.async {
-                    self?.tableView.reloadData()
+                    self.tableView.reloadData()
                 }
             case .failure(_):
-                self?.models = self?.fileCache.fetchFriends() ?? []
+                self.models = self.fileCache.fetchFriends()
                 DispatchQueue.main.async {
-                    self?.showAlert()
+                    self.showAlert()
                 }
             }
             DispatchQueue.main.async {
-                self?.refreshControl?.endRefreshing()
+                self.refreshControl?.endRefreshing()
             }
         }
     }
@@ -122,6 +141,7 @@ private extension FriendsViewController {
         let date = DateHelper.getDate(date: fileCache.fetchFriendDate())
         let alert = UIAlertController(title: "Не удалось получить данные", message: "Данные актуальны на \(date)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Закрыть", style: .default, handler: nil))
+        presentAlertHandler?(alert)
         present(alert, animated: true, completion: nil)
     }
 }
